@@ -1,11 +1,15 @@
+const { login, fetch } = require('../src/session');
+
 exports.command = 'list';
 exports.describe = 'list all todos';
-// exports.builder = {
-//     something: {
-//       default: true
-//     }
-// }
 
-exports.handler = function(argv) {
-    console.log('list');
+exports.handler = async function(argv) {
+    const { ok, error } = await login();
+    if (!ok) {
+        console.log(error);
+        return;
+    }
+
+    const response = await fetch('https://davidqz-todos.herokuapp.com/api/v1/todos');
+    console.log(JSON.stringify(await response.json()));
 };

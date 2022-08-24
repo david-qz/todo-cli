@@ -5,4 +5,5 @@ const argv = yargs
     .command(require('./list'))
     .help()
     .alias('help', 'h')
+    .demandCommand()
     .argv;

@@ -13,6 +13,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "cookie": "^0.5.0",
+    "cross-fetch": "^3.1.5",
+    "prompt-sync": "^4.2.0",
     "yargs": "^17.5.1"
   }
 }
