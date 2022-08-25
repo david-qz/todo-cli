@@ -1,5 +1,5 @@
 {
-  "name": "todo",
+  "name": "todo-cli",
   "version": "0.0.1",
   "description": "",
   "main": "bin/main.js",
