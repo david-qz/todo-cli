@@ -54,15 +54,32 @@ async function startNewSession() {
     return { ok: true, message: 'successfully started new session' };
 }
 
+/**
+ * Resumes a past session from disk, or prompts the user to log in if a past session does not exist
+ * or is invalid. After prompting the user to log in, the new session will be saved to disk for
+ * future invocations of the app.
+ * @returns {{ok: boolean, message: string}}
+ */
 module.exports.resumeSessionOrPromptLogin = async function() {
     token = await loadSession();
     return token ? { ok: true, message: 'successfully resumed session from disk' } : await startNewSession();
 };
 
+/**
+ * Clears the current session, as well as the persistent session on disk.
+ */
 module.exports.logout = async function() {
     await clearSession();
+    token = null;
 };
 
+/**
+ * A wrapper around fetch that automatically includes the current session in the Cookie: header
+ * field.
+ * @param {string} path
+ * @param {any} options
+ * @returns {Promise<Response>}
+ */
 module.exports.fetch = function(path, options) {
     if (token) {
         if (!options) options = {};
