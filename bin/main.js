@@ -16,6 +16,7 @@ const yargs = require('yargs');
     const argv = yargs
         .command(require('./sign'))
         .command(require('./list'))
+        .command(require('./add'))
         .help()
         .alias('help', 'h')
         .demandCommand()
