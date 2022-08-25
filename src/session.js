@@ -54,6 +54,31 @@ async function startNewSession() {
     return { ok: true, message: 'successfully started new session' };
 }
 
+async function signUpUser() {
+    console.log('Enter your new credentials to sign up:');
+    const username = prompt('    username: ');
+    const password = prompt.hide('    password: ');
+
+    const response = await fetch('https://davidqz-todos.herokuapp.com/api/v1/users', {
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email: username, password })
+    });
+
+    if (!response.ok) {
+        return { ok: false, message: await response.json() };
+    }
+
+    const sessionCookie = cookie.parse(response.headers.get('set-cookie'));
+    token = sessionCookie.session;
+    await saveSession(token);
+
+    return { ok: true, message: 'successfully started new session' };
+}
+
 /**
  * Resumes a past session from disk, or prompts the user to log in if a past session does not exist
  * or is invalid. After prompting the user to log in, the new session will be saved to disk for
@@ -71,6 +96,14 @@ module.exports.resumeSessionOrPromptLogin = async function() {
 module.exports.logout = async function() {
     await clearSession();
     token = null;
+};
+
+/**
+ * Prompts a user for credentials and signs them up.
+ * @returns {{ok: boolean, message: string}}
+ */
+module.exports.signup = async function() {
+    return await signUpUser();
 };
 
 /**

@@ -1,7 +1,12 @@
-const { resumeSessionOrPromptLogin, logout, fetch } = require('../src/session');
+const {
+    resumeSessionOrPromptLogin,
+    logout,
+    signup,
+    fetch
+} = require('../src/session');
 
-exports.command = 'sign <in|out>';
-exports.describe = 'sign in or out';
+exports.command = 'sign <in|out|up>';
+exports.describe = 'sign in, out, or up';
 
 exports.handler = async function(argv) {
     const verb = argv.in;
@@ -24,6 +29,16 @@ exports.handler = async function(argv) {
         {
             await logout();
             console.log('Logged out successfully');
+            break;
+        }
+        case 'up':
+        {
+            const { ok, message } = await signup();
+            if (!ok) {
+                console.log(message);
+            } else {
+                console.log('Signed up successfully');
+            }
             break;
         }
         default:
