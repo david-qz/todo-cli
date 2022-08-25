@@ -1,4 +1,4 @@
-const { login, logout, fetch } = require('../src/session');
+const { resumeSessionOrPromptLogin, logout, fetch } = require('../src/session');
 
 exports.command = 'sign <in|out>';
 exports.describe = 'sign in or out';
@@ -9,7 +9,7 @@ exports.handler = async function(argv) {
     switch (verb) {
         case 'in':
         {
-            const { ok, message } = await login();
+            const { ok, message } = await resumeSessionOrPromptLogin();
             if (!ok) console.log(message);
 
             if (message.match(/resumed/)) {

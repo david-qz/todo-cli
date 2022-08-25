@@ -54,7 +54,7 @@ async function startNewSession() {
     return { ok: true, message: 'successfully started new session' };
 }
 
-module.exports.login = async function() {
+module.exports.resumeSessionOrPromptLogin = async function() {
     token = await loadSession();
     return token ? { ok: true, message: 'successfully resumed session from disk' } : await startNewSession();
 };
