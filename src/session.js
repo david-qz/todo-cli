@@ -25,6 +25,10 @@ async function loadSession() {
     }
 }
 
+async function clearSession() {
+    await fs.rm(sessionFilePath, { force: true });
+}
+
 async function startNewSession() {
     console.log('Enter your credentials:');
     const username = prompt('    username: ');
@@ -40,19 +44,23 @@ async function startNewSession() {
     });
 
     if (!response.ok) {
-        return { ok: false, error: await response.json() };
+        return { ok: false, message: await response.json() };
     }
 
     const sessionCookie = cookie.parse(response.headers.get('set-cookie'));
     token = sessionCookie.session;
     await saveSession(token);
 
-    return { ok: true };
+    return { ok: true, message: 'successfully started new session' };
 }
 
 module.exports.login = async function() {
     token = await loadSession();
-    return token ? { ok: true } : await startNewSession();
+    return token ? { ok: true, message: 'successfully resumed session from disk' } : await startNewSession();
+};
+
+module.exports.logout = async function() {
+    await clearSession();
 };
 
 module.exports.fetch = function(path, options) {

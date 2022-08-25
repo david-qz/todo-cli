@@ -4,9 +4,9 @@ exports.command = 'list';
 exports.describe = 'list all todos';
 
 exports.handler = async function(argv) {
-    const { ok, error } = await login();
+    const { ok, message } = await login();
     if (!ok) {
-        console.log(error);
+        console.log(message);
         return;
     }
 
