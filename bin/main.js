@@ -13,10 +13,13 @@ const yargs = require('yargs');
         }
     }
 
-    const argv = yargs
+    const parser = yargs
         .command(require('./sign'))
         .command(require('./list'))
         .command(require('./add'))
+        .option('compact')
+        .alias('compact', 'c')
+        .boolean('compact')
         .help()
         .alias('help', 'h')
         .demandCommand()
